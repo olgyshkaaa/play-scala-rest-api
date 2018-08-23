@@ -2,14 +2,11 @@ package model
 
 import java.util.Date
 
-class Email( i :Int, s: String, r: String, sub: String, mes: String, d: Date){
-  var id: Int = i
+case class Email(s: String, r: String, sub: String, mes: String){
   var sender: String = s
   var receiver: String = r
   var subject: String = sub
   var message: String = mes
-  var date: Date = d
-
 }
 //object EmailItem{
 //  def main(args: Array[String]) {

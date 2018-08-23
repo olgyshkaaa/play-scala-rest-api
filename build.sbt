@@ -9,11 +9,12 @@ scalaVersion := "2.12.6"
 
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
-libraryDependencies += "com.typesafe.play" %% "play-mailer" % "6.0.1"
-libraryDependencies += "com.typesafe.play" %% "play-mailer-guice" % "6.0.1"
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"
 
 // Adds additional packages into conf/routes
 // play.sbt.routes.RoutesKeys.routesImport += "com.example.binders._"
+libraryDependencies += "javax.mail" % "mail" % "1.5.0-b01"
+
+scalacOptions ++= Seq("-unchecked", "-deprecation")

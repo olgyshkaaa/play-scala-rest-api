@@ -5,8 +5,9 @@ import model.User
 import model.Email
 import model.UserCollection
 import java.util.concurrent.ConcurrentHashMap
-import play.api.libs.mailer._
-
+import javax.mail._
+import javax.mail.internet._
+import java.util._
 
 import scala.collection.mutable.ListBuffer
 
@@ -23,8 +24,7 @@ trait EmailServiceComponent {
   }
 }
 
-trait EmailServiceComponentImpl extends EmailServiceComponent
-with MailerComponents{
+trait EmailServiceComponentImpl extends EmailServiceComponent {
 
   override val userCollection = new UserCollection {}
   override val emailService = new EmailServiceImpl
@@ -32,7 +32,22 @@ with MailerComponents{
   class EmailServiceImpl extends EmailService {
 
     override def sendMessage(email: Email) {
-      var sender = userCollection.users.find(_.name == email.sender)
+      val sender = userCollection.users.find(_.name == email.sender)
+      val senderEmail = sender.get.email
+      val receiverEmail = userCollection.users.find(_.name == email.receiver).get.email
+
+      val properties = new Properties()
+      properties.put("mail.smtp.host", "smtp.mail.ru")
+      properties.put("mail.smtp.starttls.enable","true")
+      val session = Session.getDefaultInstance(properties)
+      val message = new MimeMessage(session)
+      message.setFrom(s"<$senderEmail>")
+      message.addRecipients(Message.RecipientType.TO,
+        s"<$receiverEmail>")
+      message.setSubject(email.subject)
+      message.setText(email.message)
+      Transport.send(message, senderEmail, "njkcnsqckjy")
+
       sender.get.Messages += email
 
     }
