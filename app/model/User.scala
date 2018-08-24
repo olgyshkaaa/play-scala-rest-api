@@ -10,13 +10,13 @@ case class User (
   Id: Int,
   Name: String,
   Email: String,
-  Messages: ListBuffer[Email]
+  Password: String
            )
 {
   var id: Int = Id
   var name: String = Name
   var email: String = Email
-  var messages: ListBuffer[Email] = Messages
+  var password: String = Password
 }
 
 

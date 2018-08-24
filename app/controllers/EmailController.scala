@@ -21,19 +21,23 @@ trait EmailController extends Controller {
   implicit val writer = new Writes[Email] {
     def writes(email: Email): JsValue = {
       Json.obj(
+        "id" -> email.id,
         "sender" -> email.sender,
         "receiver" -> email.receiver,
         "subject" -> email.subject,
-        "message" -> email.message
+        "message" -> email.message,
+        "sentdate" -> email.sentdate
       )
     }
   }
 
   implicit val emailReads: Reads[Email] = (
+    (__ \ "id").read[Int] and
       (__ \ "sender").read[String] and
       (__ \ "receiver").read[String] and
       (__ \ "subject").read[String] and
-      (__ \ "message").read[String]
+      (__ \ "message").read[String] and
+      (__ \ "sentdate").readNullable[Date]
     )(Email.apply _)
 
   def GetMessages(username: String) = Action {

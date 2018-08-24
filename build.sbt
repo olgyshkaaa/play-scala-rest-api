@@ -17,4 +17,11 @@ libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2
 // play.sbt.routes.RoutesKeys.routesImport += "com.example.binders._"
 libraryDependencies += "javax.mail" % "mail" % "1.5.0-b01"
 
+libraryDependencies ++= Seq(
+  "org.postgresql" % "postgresql" % "9.4-1206-jdbc42",
+  "org.scalikejdbc" %% "scalikejdbc"                  % "3.3.0",
+  "org.scalikejdbc" %% "scalikejdbc-config"           % "3.3.0",
+  "org.scalikejdbc" %% "scalikejdbc-play-initializer" % "2.6.0-scalikejdbc-3.3"
+)
+
 scalacOptions ++= Seq("-unchecked", "-deprecation")
