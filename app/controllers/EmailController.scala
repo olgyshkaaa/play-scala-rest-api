@@ -1,21 +1,18 @@
 package controllers
 
-import javax.inject._
 import model.Email
-import model.User
-import play.api._
 import play.api.mvc._
-import service.EmailServiceComponent
+import service.{EmailServiceComponent, EmailServiceComponentImpl}
 import play.api.libs.json._
-import play.api.libs.json.Reads._
 import play.api.libs.json.Writes._
-import play.api.libs.functional.syntax._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import java.util.Date
 
+import javax.inject.Singleton
 
-trait EmailController  extends Controller with EmailServiceComponent {
+
+trait EmailController  extends InjectedController with EmailServiceComponent {
 
   implicit val writer = new Writes[Email] {
     def writes(email: Email): JsValue = {
@@ -39,21 +36,35 @@ trait EmailController  extends Controller with EmailServiceComponent {
       (__ \ "sentdate").readNullable[Date]
     )(Email.apply _)
 
-  def getMessages(username: String) = Action {
+  def getMessages(username: String):Action[AnyContent]
+
+  def sendEmailAndStore:Action[JsValue]
+}
+
+@Singleton
+class EmailControllerImpl extends EmailController
+  with EmailServiceComponentImpl {
+
+  def index = Action {
+    Ok(views.html.index())
+  }
+
+  override  def getMessages(username: String) = Action {
     val messages = emailService.getUsersMessages(username)
     Ok(Json.toJson(messages))
   }
 
-  def sendEmailAndStore = Action(parse.json) { request =>
+  override def sendEmailAndStore = Action(parse.json) { request =>
     val emailResult = request.body.validate[Email]
-      emailResult.fold(
+    emailResult.fold(
       errors => {
         BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
       },
-        email => {
-          emailService.sendMessage(email)
-          Created
+      email => {
+        emailService.sendMessage(email)
+        Created
       }
     )
   }
+
 }
