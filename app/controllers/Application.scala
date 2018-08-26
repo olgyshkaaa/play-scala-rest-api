@@ -1,10 +1,10 @@
 package controllers
 
-import play.api._
+import javax.inject.Singleton
 import play.api.mvc._
 import service.EmailServiceComponentImpl
 
-class SuperMail extends EmailController
+class Application extends EmailController
   with EmailServiceComponentImpl {
 
   def index = Action {

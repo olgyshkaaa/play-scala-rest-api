@@ -1,10 +1,5 @@
 package model
 
-import java.util.Date
-
-import akka.http.scaladsl.model.DateTime
-
-import scala.collection.mutable.ListBuffer
 
 case class User (
   Id: Int,

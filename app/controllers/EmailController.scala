@@ -15,8 +15,7 @@ import play.api.libs.json.Reads._
 import java.util.Date
 
 
-trait EmailController extends Controller {
-  self: EmailServiceComponent =>0
+trait EmailController  extends Controller with EmailServiceComponent {
 
   implicit val writer = new Writes[Email] {
     def writes(email: Email): JsValue = {
@@ -40,12 +39,12 @@ trait EmailController extends Controller {
       (__ \ "sentdate").readNullable[Date]
     )(Email.apply _)
 
-  def GetMessages(username: String) = Action {
+  def getMessages(username: String) = Action {
     val messages = emailService.getUsersMessages(username)
     Ok(Json.toJson(messages))
   }
 
-  def SendEmailAndStore = Action(parse.json) {request =>
+  def sendEmailAndStore = Action(parse.json) { request =>
     val emailResult = request.body.validate[Email]
       emailResult.fold(
       errors => {
