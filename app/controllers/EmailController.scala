@@ -22,7 +22,7 @@ trait EmailController  extends InjectedController  {
         "receiver" -> email.receiver,
         "subject" -> email.subject,
         "message" -> email.message,
-        "sentdate" -> email.sentdate
+        "sentdate" -> String.valueOf(email.sentdate)
       )
     }
   }
