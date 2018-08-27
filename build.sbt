@@ -19,9 +19,11 @@ libraryDependencies += "javax.mail" % "mail" % "1.5.0-b01"
 
 libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.4-1206-jdbc42",
-  "org.scalikejdbc" %% "scalikejdbc"                  % "3.3.0",
-  "org.scalikejdbc" %% "scalikejdbc-config"           % "3.3.0",
-  "org.scalikejdbc" %% "scalikejdbc-play-initializer" % "2.6.0-scalikejdbc-3.3"
+  "org.scalikejdbc" %% "scalikejdbc" % "3.3.0",
+  "org.scalikejdbc" %% "scalikejdbc-config" % "3.3.0",
+  "org.scalikejdbc" %% "scalikejdbc-play-initializer" % "2.6.0-scalikejdbc-3.3",
+  "com.google.inject" % "guice" % "3.0",
+  "com.tzavellas" % "sse-guice" % "0.7.1"
 )
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
