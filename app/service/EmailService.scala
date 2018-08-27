@@ -3,6 +3,7 @@ package service
 
 import java.util.Calendar
 
+import com.google.inject.ImplementedBy
 import model.User
 import model.Email
 import javax.mail._
@@ -10,25 +11,21 @@ import javax.mail.internet._
 import scalikejdbc._
 
 
-trait EmailServiceComponent {
 
-  val emailService: EmailService
-
+@ImplementedBy(classOf[EmailServiceImpl])
   trait EmailService {
 
     def sendMessage(email: Email)
 
     def getUsersMessages(username: String) : List[Email]
   }
-}
 
-trait EmailServiceComponentImpl extends EmailServiceComponent {
 
-  override val emailService = new EmailServiceImpl
-  implicit val session = AutoSession
 
-  class EmailServiceImpl extends EmailService {
 
+
+  class EmailServiceImpl () extends EmailService {
+    implicit val session = AutoSession
 
     override def sendMessage(email: Email) {
       val sender = sql"select * from users where name = ${email.sender}"
@@ -69,5 +66,5 @@ trait EmailServiceComponentImpl extends EmailServiceComponent {
       /// email.sentdate = Option(message.getSentDate())
       email.sentdate = Option(Calendar.getInstance().getTime())
     }
-  }
+
 }

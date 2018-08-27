@@ -2,17 +2,17 @@ package controllers
 
 import model.Email
 import play.api.mvc._
-import service.{EmailServiceComponent, EmailServiceComponentImpl}
+import service.{EmailService}
 import play.api.libs.json._
 import play.api.libs.json.Writes._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import java.util.Date
 
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 
 
-trait EmailController  extends InjectedController with EmailServiceComponent {
+trait EmailController  extends InjectedController  {
 
   implicit val writer = new Writes[Email] {
     def writes(email: Email): JsValue = {
@@ -22,7 +22,7 @@ trait EmailController  extends InjectedController with EmailServiceComponent {
         "receiver" -> email.receiver,
         "subject" -> email.subject,
         "message" -> email.message,
-        "sentdate" -> email.sentdate
+        "sentdate" -> String.valueOf(email.sentdate)
       )
     }
   }
@@ -42,8 +42,8 @@ trait EmailController  extends InjectedController with EmailServiceComponent {
 }
 
 @Singleton
-class EmailControllerImpl extends EmailController
-  with EmailServiceComponentImpl {
+class EmailControllerImpl @Inject()(emailService: EmailService)  extends EmailController
+{
 
   def index = Action {
     Ok(views.html.index())
